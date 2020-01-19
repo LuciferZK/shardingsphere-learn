@@ -1,0 +1,45 @@
+############################公共表#################################
+#服务端口
+server:
+  port: 56081
+#服务名
+spring:
+  application:
+    name: sharding-jdbc-examples
+  main:
+    allow-bean-definition-overriding: true
+  #shardingsphere相关配置
+  shardingsphere:
+    datasource:
+      names: m1,m2
+      m1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.87.133:3306/user_db?useUnicode=true
+        username: root
+        password: 123456
+      m2:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.87.134:3306/user_db?useUnicode=true
+        username: root
+        password: 123456
+    sharding:
+      broadcast‐tables: t_dict  #公共表
+      tables:
+        t_dict:
+          key-generator:
+            column: dict_id
+            type: SNOWFLAKE
+    props:
+      sql:
+        show: true   #打印sql
+
+
+#日志打印
+logging:
+  level:
+    root: info
+    org.springframework.web: info
+    com.lucifer.sharding.dao: debug
+    druid.sql: debug
